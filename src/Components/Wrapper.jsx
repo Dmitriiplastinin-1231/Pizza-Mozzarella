@@ -1,43 +1,24 @@
+import { Routes, Route } from 'react-router-dom';
 import Header from './Header/Header';
-import Categories from './Categories/Categories';
-import Sort from './Sort/Sort';
-import PizzaBlock from './PizzaBlock/PizzaBlock';
+import MainPage from './MainPage/MainPage';
+import CartPage from './CartPage/CartPage';
+import ErrorPage from './ErrorPage/ErrorPage';
 
-const Wrapper = () => {
+const Wrapper = ({ getPizzas }) => {
+
+
+
   return (
     <div className="wrapper">
       <Header />
       <div className="content">
-        <div className="container">
-          <div className="content__top">
-            <Categories />
-            <Sort />
-          </div>
-          <h2 className="content__title">Все пиццы</h2>
-          <div className="content__items">
-            <PizzaBlock
-              title="Пепперони Фреш с перцем"
-              price="830"
-              sizes={[26, 30, 40]}
-            />
-            <PizzaBlock
-              title="Пепперони Фреш с перцем"
-              price="830"
-              sizes={[26, 30, 40]}
-            />
-            <PizzaBlock
-              title="Пепперони Фреш с перцем"
-              price="830"
-              sizes={[26, 30, 40]}
-            />
-            <PizzaBlock
-              title="Пепперони Фреш с перцем"
-              price="830"
-              sizes={[26, 30, 40]}
-            />
-          </div>
+
+          <Routes>
+            <Route path='/' element={<MainPage getPizzas={getPizzas} />} />
+            <Route path='/cart' element={<CartPage />} />
+            <Route path='*' element={<ErrorPage />} />
+          </Routes>
         </div>
-      </div>
     </div>
   );
 };

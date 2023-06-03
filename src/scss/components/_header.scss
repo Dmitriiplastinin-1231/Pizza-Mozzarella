@@ -29,4 +29,15 @@
       color: #7b7b7b;
     }
   }
+  @media (max-width: 560px) {
+    .container{
+      display: block;
+    }
+    .button--cart{
+      justify-content: center;
+    }
+    &__logo{
+      margin-bottom: 20px;
+    }
+  }
 }

@@ -1,18 +1,20 @@
-import { useState } from 'react';
+import { setCurrentSort, setIsOpen } from '../../../redux/slices/sortSlice';
+import { useDispatch, useSelector } from 'react-redux';
+
 
 
 const Sort = () => {
 
-  const [isOpen, setIsOpen] = useState(false);
-  const [currentCategory, setCurrentCategory] = useState(0);
+  const { isOpen, currentSort } = useSelector(state => state.sort);
+  const dispatch = useDispatch();
+
 
   const sortCategory = ['популярности', 'цене', 'алфавиту'];
-  const sortCurrentName = sortCategory[currentCategory];
+  const sortCurrentName = sortCategory[currentSort];
 
   const onClickSort = (index) => {
-    console.log(1)
-    setCurrentCategory(index);
-    setIsOpen(false);
+    dispatch(setCurrentSort(index));
+    dispatch(setIsOpen());
   }
 
   return (
@@ -30,7 +32,7 @@ const Sort = () => {
           />
         </svg>
         <b>Сортировка по:</b>
-        <span onClick={() => setIsOpen(!isOpen)}>{sortCurrentName}</span>
+        <span onClick={() => dispatch(setIsOpen())}>{sortCurrentName}</span>
       </div>
       {
         isOpen && (
@@ -40,7 +42,7 @@ const Sort = () => {
                 sortCategory.map((ctg, index) => {
                   return (
                     <li
-                      className={currentCategory === index ? 'active' : ''}
+                      className={currentSort === index ? 'active' : ''}
                       key={ctg}
                       onClick={() => onClickSort(index)}
                     >

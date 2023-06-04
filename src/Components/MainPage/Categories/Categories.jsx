@@ -1,13 +1,17 @@
-import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { setActiveCategories } from "../../../redux/slices/categoriesSlice";
 
 const Categories = () => {
 
-  const [activeCategories, setActiveCategories] = useState(0);
+  const activeCategories = useSelector(
+    state => state.categories.currentCategory
+  )
+  const dispatch = useDispatch()
 
   const categories = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые']
 
   const onClick = (index) => {
-    setActiveCategories(index)
+    dispatch(setActiveCategories(index))
   }
 
   return (

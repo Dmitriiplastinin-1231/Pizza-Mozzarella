@@ -1,10 +1,10 @@
 import { useSelector, useDispatch } from "react-redux";
-import { setActiveCategories } from "../../../redux/slices/categoriesSlice";
+import { setActiveCategories } from "../../../redux/slices/sortSlice";
 
 const Categories = () => {
 
   const activeCategories = useSelector(
-    state => state.categories.currentCategory
+    state => state.sort.currentCategory
   )
   const dispatch = useDispatch()
 

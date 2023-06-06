@@ -1,19 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initailState = {
-    pizzas: []
+const initialState = {
+    pizzas: [],
+    currentPage:0
 };
 
 const pizzasSlice = createSlice({
     name: 'pizzas',
-    initailState,
+    initialState,
     reducers: {
         setPizzas: (state, action) => {
             state.pizzas = action.payload;
+        },
+        setCurrentPage: (state, action) => {
+            state.currentPage = action.payload;
         }
     }
 });
 
-export const { setPizzas } = pizzasSlice.actions;
+export const { setPizzas, setCurrentPage } = pizzasSlice.actions;
 
 export default pizzasSlice.reducer;

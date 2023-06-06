@@ -3,16 +3,26 @@ import Categories from './Categories/Categories';
 import Sort from './Sort/Sort';
 import PizzaBlock from './PizzaBlock/PizzaBlock';
 import PizzaBlockSkeleton from "./PizzaBlock/PizzaBlockSkeleton";
+import { useSelector } from 'react-redux';
+import Pagination from './Pagination/Pagination';
+import { setCurrentPage } from '../../redux/slices/pizzasSlice';
+import { useNavigate } from 'react-router-dom';
 
 const MainPage = ({ getPizzas }) => {
+
+    const navigate = useNavigate();
 
     const [pizzas, setPizzas] = useState([]);
     const isLoadin = !pizzas.length;
 
+    const { currentPage } = useSelector(state => state.pizzas);
+    const { currentCategory, currentSort, sortCategory, searchInputValue } = useSelector(state => state.sort);
+
     useEffect(() => {
-        getPizzas()
+        getPizzas(currentCategory, sortCategory[currentSort], searchInputValue, currentPage)
             .then(response => setPizzas(response));
-    }, []);
+        }, [currentCategory, currentSort, searchInputValue, currentPage]
+    );
 
 
     return (
@@ -36,6 +46,7 @@ const MainPage = ({ getPizzas }) => {
                 })
             }
             </div>
+            <Pagination setCurrentPage={setCurrentPage} currentPage={currentPage} />
         </div>
     )
 }

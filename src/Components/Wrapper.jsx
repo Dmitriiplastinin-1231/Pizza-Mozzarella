@@ -14,7 +14,7 @@ const Wrapper = ({ getPizzas }) => {
       <div className="content">
 
           <Routes>
-            <Route path='/' element={<MainPage getPizzas={getPizzas} />} />
+            <Route path='/:id?' element={<MainPage getPizzas={getPizzas} />} />
             <Route path='/cart' element={<CartPage />} />
             <Route path='*' element={<ErrorPage />} />
           </Routes>

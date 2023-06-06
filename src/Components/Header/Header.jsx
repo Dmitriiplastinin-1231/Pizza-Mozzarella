@@ -1,7 +1,40 @@
-import logoSvg from '../../assets/img/pizza-logo.svg'
+import logoSvg from '../../assets/img/pizza-logo.svg';
+import debounce from 'lodash.debounce';
 import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { setSearchInputValue } from '../../redux/slices/sortSlice';
+import { useRef, useCallback, useState } from 'react';
 
 const Header = () => {
+
+  const dispatch = useDispatch();
+
+  const [inputValue, setInputValue] = useState('')
+  const inputRef = useRef();
+
+
+  const searchChange = (e) => {
+    setInputValue(e.target.value);
+    updateSearchValue(inputValue);
+  }
+
+  const updateSearchValue = useCallback(
+    debounce((inputValue) => {
+      dispatch(setSearchInputValue(inputValue))
+    }, 1000)
+  , []);
+
+
+  const clearInput = () => {
+    dispatch(setSearchInputValue(''));
+    setInputValue('');
+    inputRef.current.focus();
+  }
+
+  useCallback((e) => {
+    debounce()
+  })
+
   return (
     <header className="header">
       <div className="container">
@@ -12,6 +45,19 @@ const Header = () => {
             <p>самая вкусная пицца во вселенной</p>
           </div>
         </Link>
+        <div className="search">
+          <span className='search__icon'>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+              <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" />
+            </svg>
+          </span>
+          <input className="search__input" type="text" placeholder='Поиск...' value={inputValue} onChange={e => searchChange(e)} ref={inputRef} />
+          <span className="search__clear" onClick={clearInput}>
+            <svg width="20" height="20" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+              <path fillRule="evenodd" clipRule="evenodd" d="M4.11 2.697L2.698 4.11 6.586 8l-3.89 3.89 1.415 1.413L8 9.414l3.89 3.89 1.413-1.415L9.414 8l3.89-3.89-1.415-1.413L8 6.586l-3.89-3.89z" ></path>
+            </svg>
+          </span>
+        </div>
         <div className="header__cart">
           <Link to="/cart" className="button button--cart">
             <span>520 ₽</span>

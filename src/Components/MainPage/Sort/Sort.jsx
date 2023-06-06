@@ -5,12 +5,11 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const Sort = () => {
 
-  const { isOpen, currentSort } = useSelector(state => state.sort);
+
+  const { isOpen, currentSort, sortCategory } = useSelector(state => state.sort);
   const dispatch = useDispatch();
 
-
-  const sortCategory = ['популярности', 'цене', 'алфавиту'];
-  const sortCurrentName = sortCategory[currentSort];
+  const sortCurrentName = sortCategory[currentSort].viewName;
 
   const onClickSort = (index) => {
     dispatch(setCurrentSort(index));
@@ -43,10 +42,10 @@ const Sort = () => {
                   return (
                     <li
                       className={currentSort === index ? 'active' : ''}
-                      key={ctg}
+                      key={ctg.name}
                       onClick={() => onClickSort(index)}
                     >
-                      {ctg}
+                      {ctg.viewName}
                     </li>)
                 })
               }

@@ -3,25 +3,32 @@ import debounce from 'lodash.debounce';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { setSearchInputValue } from '../../redux/slices/sortSlice';
-import { useRef, useCallback, useState } from 'react';
+import { useRef, useCallback, useState, useEffect } from 'react';
 
 const Header = () => {
 
+  const searchInputValue = useSelector(state => state.sort.searchInputValue);
+
+
   const dispatch = useDispatch();
 
-  const [inputValue, setInputValue] = useState('')
+
+  const [inputValue, setInputValue] = useState('');
   const inputRef = useRef();
 
+  useEffect(() => {
+    setInputValue(searchInputValue)
+  }, [searchInputValue]);
 
   const searchChange = (e) => {
     setInputValue(e.target.value);
-    updateSearchValue(inputValue);
+    updateSearchValue(e.target.value);
   }
 
   const updateSearchValue = useCallback(
     debounce((inputValue) => {
       dispatch(setSearchInputValue(inputValue))
-    }, 1000)
+    }, 400)
   , []);
 
 
@@ -31,9 +38,6 @@ const Header = () => {
     inputRef.current.focus();
   }
 
-  useCallback((e) => {
-    debounce()
-  })
 
   return (
     <header className="header">

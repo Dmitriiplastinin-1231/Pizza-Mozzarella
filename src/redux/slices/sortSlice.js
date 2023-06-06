@@ -7,7 +7,8 @@ const initialState = {
     { name: 'title', viewName: 'алфавиту' }],
     isOpen: false,
     currentCategory: 0,
-    searchInputValue: ''
+    searchInputValue: '',
+    isSearch: false
 };
 
 const sortSlice = createSlice({
@@ -25,10 +26,17 @@ const sortSlice = createSlice({
         },
         setSearchInputValue: (state, action) => {
             state.searchInputValue = action.payload;
+        },
+        setParams: (state, action) => {
+            const { category = 0, sort = 0, search } = action.payload;
+            state.currentCategory = Number(category);
+            state.currentSort = Number(sort);
+            state.searchInputValue = search;
+            state.isSearch = true;
         }
     }
 });
 
-export const { setCurrentSort, setIsOpen, setActiveCategories, setSearchInputValue } = sortSlice.actions;
+export const { setCurrentSort, setIsOpen, setActiveCategories, setSearchInputValue, setParams } = sortSlice.actions;
 
 export default sortSlice.reducer;

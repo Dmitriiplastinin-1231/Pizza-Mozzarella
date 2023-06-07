@@ -8,7 +8,6 @@ const initialState = {
     isOpen: false,
     currentCategory: 0,
     searchInputValue: '',
-    isSearch: false
 };
 
 const sortSlice = createSlice({
@@ -28,11 +27,10 @@ const sortSlice = createSlice({
             state.searchInputValue = action.payload;
         },
         setParams: (state, action) => {
-            const { category = 0, sort = 0, search } = action.payload;
+            const { category = 0, sort = 0, search = '' } = action.payload;
             state.currentCategory = Number(category);
             state.currentSort = Number(sort);
             state.searchInputValue = search;
-            state.isSearch = true;
         }
     }
 });

@@ -20,14 +20,15 @@ const MainPage = ({ getPizzas }) => {
     const isLoadin = !pizzas.length;
 
     const { currentPage } = useSelector(state => state.pizzas);
-    const { currentCategory, currentSort, sortCategory, searchInputValue, isSearch } = useSelector(state => state.sort);
+    const { currentCategory, currentSort, sortCategory, searchInputValue } = useSelector(state => state.sort);
 
+    const [isSearch, setIsSearch] = useState(false);
     useEffect(() => {
         if (window.location.search) {
             const params = qs.parse(window.location.search.substring(1));
-
             dispatch(setParams(params))
         }
+        setIsSearch(true);
     }, [])
 
     useEffect(() => {

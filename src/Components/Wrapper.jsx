@@ -5,14 +5,10 @@ import CartPage from './CartPage/CartPage';
 import ErrorPage from './ErrorPage/ErrorPage';
 
 const Wrapper = ({ getPizzas }) => {
-
-
-
   return (
     <div className="wrapper">
       <Header />
       <div className="content">
-
           <Routes>
             <Route path='/:id?' element={<MainPage getPizzas={getPizzas} />} />
             <Route path='/cart' element={<CartPage />} />

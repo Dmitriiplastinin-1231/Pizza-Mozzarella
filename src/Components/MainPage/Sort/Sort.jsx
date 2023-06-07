@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { setCurrentSort, setIsOpen } from '../../../redux/slices/sortSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -16,8 +17,23 @@ const Sort = () => {
     dispatch(setIsOpen());
   }
 
+
+  const sortRef = useRef();
+
+  useEffect(() => {
+
+    const setEvent = (e) => {
+      if (!e.composedPath().includes(sortRef.current)) {
+        dispatch(setIsOpen(false));
+      }
+    }
+    document.body.addEventListener('click', setEvent)
+
+    return () => document.body.removeEventListener('click', setEvent)
+  }, [])
+
   return (
-    <div className="sort">
+    <div className="sort" ref={sortRef}>
       <div className="sort__label">
         <svg
           width="10"

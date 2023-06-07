@@ -40,6 +40,10 @@ body {
       grid-template-columns: 1fr;
     }
   }
+  .container--cart .content__items{
+    display: flex;
+    flex-direction: column;
+  }
 
   &__top {
     display: flex;

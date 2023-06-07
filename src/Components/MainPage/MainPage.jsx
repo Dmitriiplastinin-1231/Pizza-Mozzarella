@@ -1,26 +1,28 @@
 import { useEffect, useState } from 'react';
-import Categories from './Categories/Categories';
-import Sort from './Sort/Sort';
-import PizzaBlock from './PizzaBlock/PizzaBlock';
-import PizzaBlockSkeleton from "./PizzaBlock/PizzaBlockSkeleton";
 import { useSelector, useDispatch } from 'react-redux';
-import Pagination from './Pagination/Pagination';
-import { setCurrentPage } from '../../redux/slices/pizzasSlice';
 import { useNavigate } from 'react-router-dom';
 import qs from 'qs';
+import PizzaBlockSkeleton from "./PizzaBlock/PizzaBlockSkeleton";
+import PizzaBlock from './PizzaBlock/PizzaBlock';
+import Pagination from './Pagination/Pagination';
+import Categories from './Categories/Categories';
+import Sort from './Sort/Sort';
+import { setCurrentPage, setPizzas } from '../../redux/slices/pizzasSlice';
 import { setParams } from '../../redux/slices/sortSlice';
 
 const MainPage = ({ getPizzas }) => {
 
     const dispatch = useDispatch();
-
     const navigate = useNavigate();
 
-    const [pizzas, setPizzas] = useState([]);
-    const isLoadin = !pizzas.length;
 
-    const { currentPage } = useSelector(state => state.pizzas);
+    // SearchData;
+
+    const { currentPage, pizzas } = useSelector(state => state.pizzas);
     const { currentCategory, currentSort, sortCategory, searchInputValue } = useSelector(state => state.sort);
+
+
+    // Dispatch data from the URL;
 
     const [isSearch, setIsSearch] = useState(false);
     useEffect(() => {
@@ -31,13 +33,19 @@ const MainPage = ({ getPizzas }) => {
         setIsSearch(true);
     }, [])
 
+    // Request to the server;
+
+    const isLoadin = !pizzas.length;
+
     useEffect(() => {
         if (isSearch) {
             getPizzas(currentCategory, sortCategory[currentSort], searchInputValue, currentPage)
-                .then(response => setPizzas(response));
+                .then(response => dispatch(setPizzas(response)));
         }
         }, [currentCategory, currentSort, searchInputValue, currentPage, isSearch]
     );
+
+    // Creating URL
 
     useEffect(() => {
 
@@ -53,6 +61,7 @@ const MainPage = ({ getPizzas }) => {
 
         }, [currentCategory, currentSort, searchInputValue]
     );
+
 
 
     return (

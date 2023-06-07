@@ -6,31 +6,42 @@ import { setSearchInputValue } from '../../redux/slices/sortSlice';
 import { useRef, useCallback, useState, useEffect } from 'react';
 
 const Header = () => {
-
-  const searchInputValue = useSelector(state => state.sort.searchInputValue);
-
-
   const dispatch = useDispatch();
 
 
+  const searchInputValue = useSelector(state => state.sort.searchInputValue);
   const [inputValue, setInputValue] = useState('');
   const inputRef = useRef();
+
+  const { pizzasAmount, priceSum } = useSelector(state => state.cart);
+
+
+  /**
+   * @crutch
+   * @descr after set local state in rudux, makes a set back(redux -> loc s);
+   * @problem when setting data from the url, the search input is empty;
+   */
 
   useEffect(() => {
     setInputValue(searchInputValue)
   }, [searchInputValue]);
+
+  // Input action
 
   const searchChange = (e) => {
     setInputValue(e.target.value);
     updateSearchValue(e.target.value);
   }
 
+  // Input action for redux store with debonce;
+
   const updateSearchValue = useCallback(
     debounce((inputValue) => {
       dispatch(setSearchInputValue(inputValue))
     }, 400)
-  , []);
+    , []);
 
+  // Clear input;
 
   const clearInput = () => {
     dispatch(setSearchInputValue(''));
@@ -64,7 +75,7 @@ const Header = () => {
         </div>
         <div className="header__cart">
           <Link to="/cart" className="button button--cart">
-            <span>520 ₽</span>
+            <span>{ priceSum } ₽</span>
             <div className="button__delimiter"></div>
             <svg
               width="18"
@@ -94,7 +105,7 @@ const Header = () => {
                 strokeLinejoin="round"
               />
             </svg>
-            <span>3</span>
+            <span>{ pizzasAmount }</span>
           </Link>
         </div>
       </div>

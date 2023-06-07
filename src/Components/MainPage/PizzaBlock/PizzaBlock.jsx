@@ -1,6 +1,15 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setPizza } from "../../../redux/slices/cartSlice";
+import { selectPizza } from '../../../redux/slices/pizzasSlice';
 
-const PizzaBlock = ({ title, id, price, sizes, imageUrl, types }) => {
+/**
+ * @bug About types of pizza;
+ */
+
+const PizzaBlock = ({ title, id, price, sizes, imageUrl, types, selected = 0 }) => {
+
+  const dispatch = useDispatch();
 
   const pizzaType = ['тонкое', 'традиционное'];
 
@@ -8,7 +17,17 @@ const PizzaBlock = ({ title, id, price, sizes, imageUrl, types }) => {
   const [pizzaCurrentSize, setPizzaCurrentSize] = useState(0);
 
   const onClick = () => {
-    // setPizzaCount(pizzaCount + 1);
+    const thisPizza = {
+      id,
+      title,
+      price,
+      imageUrl,
+      pizzaCurrentSize: sizes[pizzaCurrentSize],
+      pizzaCurrentType: pizzaType[pizzaCurrentType]
+    };
+
+    dispatch(setPizza(thisPizza));
+    dispatch(selectPizza({id, selected}))
   }
 
 
@@ -62,7 +81,7 @@ const PizzaBlock = ({ title, id, price, sizes, imageUrl, types }) => {
             />
           </svg>
           <span>Добавить</span>
-          <i>0</i>
+          <i>{ selected }</i>
         </button>
       </div>
     </div>

@@ -17,8 +17,12 @@ const sortSlice = createSlice({
         setCurrentSort: (state, action) => {
             state.currentSort = action.payload;
         },
-        setIsOpen: (state) => {
-            state.isOpen = !state.isOpen;
+        setIsOpen: (state, action) => {
+            if (action.payload || action.payload === false) {
+                state.isOpen = action.payload
+            } else {
+                state.isOpen = !state.isOpen;
+            }
         },
         setActiveCategories: (state, action) => {
             state.currentCategory = action.payload;

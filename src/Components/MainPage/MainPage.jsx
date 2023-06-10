@@ -2,15 +2,15 @@ import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import qs from 'qs';
-import PizzaBlockSkeleton from "./PizzaBlock/PizzaBlockSkeleton";
-import PizzaBlock from './PizzaBlock/PizzaBlock';
 import Pagination from './Pagination/Pagination';
 import Categories from './Categories/Categories';
 import Sort from './Sort/Sort';
-import { setCurrentPage, setPizzas } from '../../redux/slices/pizzasSlice';
+import { setCurrentPage } from '../../redux/slices/pizzasSlice';
 import { setParams } from '../../redux/slices/sortSlice';
+import Pizzas from './Pizzas/Pizzas';
+import { pizzaFetch } from '../../redux/slices/pizzasSlice';
 
-const MainPage = ({ getPizzas }) => {
+const MainPage = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -18,7 +18,7 @@ const MainPage = ({ getPizzas }) => {
 
     // SearchData;
 
-    const { currentPage, pizzas } = useSelector(state => state.pizzas);
+    const { currentPage, pizzas, fetchStatus } = useSelector(state => state.pizzas);
     const { currentCategory, currentSort, sortCategory, searchInputValue } = useSelector(state => state.sort);
 
 
@@ -31,18 +31,15 @@ const MainPage = ({ getPizzas }) => {
             dispatch(setParams(params))
         }
         setIsSearch(true);
-    }, [])
+    }, [dispatch])
 
     // Request to the server;
 
-    const isLoadin = !pizzas.length;
-
     useEffect(() => {
         if (isSearch) {
-            getPizzas(currentCategory, sortCategory[currentSort], searchInputValue, currentPage)
-                .then(response => dispatch(setPizzas(response)));
+            dispatch(pizzaFetch({ currentCategory, sortCategory, currentSort, searchInputValue, currentPage }));
         }
-        }, [currentCategory, currentSort, searchInputValue, currentPage, isSearch]
+    }, [currentCategory, sortCategory, currentSort, searchInputValue, currentPage, isSearch, dispatch]
     );
 
     // Creating URL
@@ -59,7 +56,7 @@ const MainPage = ({ getPizzas }) => {
 
         navigate(`?${queryString}`);
 
-        }, [currentCategory, currentSort, searchInputValue]
+        }, [currentCategory, currentSort, searchInputValue, navigate]
     );
 
 
@@ -71,20 +68,9 @@ const MainPage = ({ getPizzas }) => {
                 <Sort />
             </div>
             <h2 className="content__title">Все пиццы</h2>
-            <div className="content__items">
-            {
-                isLoadin
-                ?[...new Array(6)].map((_, index) => <PizzaBlockSkeleton key={index} />)
-                :pizzas.map((pizza) => {
-                    return (
-                    <PizzaBlock
-                        {...pizza}
-                        key={pizza.id}
-                    />
-                    )
-                })
-            }
-            </div>
+
+            <Pizzas fetchStatus={fetchStatus} pizzas={pizzas} />
+
             <Pagination setCurrentPage={setCurrentPage} currentPage={currentPage} />
         </div>
     )

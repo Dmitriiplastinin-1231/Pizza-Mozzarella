@@ -4,13 +4,13 @@ import MainPage from './MainPage/MainPage';
 import CartPage from './CartPage/CartPage';
 import ErrorPage from './ErrorPage/ErrorPage';
 
-const Wrapper = ({ getPizzas }) => {
+const Wrapper = () => {
   return (
     <div className="wrapper">
       <Header />
       <div className="content">
           <Routes>
-            <Route path='/:id?' element={<MainPage getPizzas={getPizzas} />} />
+            <Route path='/:id?' element={<MainPage />} />
             <Route path='/cart' element={<CartPage />} />
             <Route path='*' element={<ErrorPage />} />
           </Routes>

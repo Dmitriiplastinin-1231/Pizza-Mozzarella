@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setPizza } from "../../../redux/slices/cartSlice";
-import { selectPizza } from '../../../redux/slices/pizzasSlice';
+import { setPizza } from "../../../../redux/slices/cartSlice";
+import { selectPizza } from '../../../../redux/slices/pizzasSlice';
 
 /**
  * @bug About types of pizza;

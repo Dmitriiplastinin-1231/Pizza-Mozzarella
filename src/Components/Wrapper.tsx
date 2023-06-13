@@ -1,10 +1,11 @@
+import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Header from './Header/Header';
 import MainPage from './MainPage/MainPage';
 import CartPage from './CartPage/CartPage';
 import ErrorPage from './ErrorPage/ErrorPage';
 
-const Wrapper = () => {
+const Wrapper: React.FC = () => {
   return (
     <div className="wrapper">
       <Header />

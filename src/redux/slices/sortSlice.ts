@@ -1,6 +1,17 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { sortCategory } from "../../@types/types";
 
-const initialState = {
+
+
+interface sortSliceState {
+    currentSort: number,
+    sortCategory: sortCategory[],
+    isOpen: boolean,
+    currentCategory: number,
+    searchInputValue: string
+}
+
+const initialState: sortSliceState = {
     currentSort: 0,
     sortCategory: [{ name: 'rating', viewName: 'популярности' },
     { name: 'price', viewName: 'цене' },
@@ -14,23 +25,23 @@ const sortSlice = createSlice({
     name: 'sort',
     initialState,
     reducers: {
-        setCurrentSort: (state, action) => {
+        setCurrentSort: (state, action: PayloadAction<number>) => {
             state.currentSort = action.payload;
         },
-        setIsOpen: (state, action) => {
+        setIsOpen: (state, action: PayloadAction<boolean | undefined>) => {
             if (action.payload || action.payload === false) {
                 state.isOpen = action.payload
             } else {
                 state.isOpen = !state.isOpen;
             }
         },
-        setActiveCategories: (state, action) => {
+        setActiveCategories: (state, action: PayloadAction<number>) => {
             state.currentCategory = action.payload;
         },
-        setSearchInputValue: (state, action) => {
+        setSearchInputValue: (state, action: PayloadAction<string>) => {
             state.searchInputValue = action.payload;
         },
-        setParams: (state, action) => {
+        setParams: (state, action: PayloadAction<{category?: number, sort?: number, search?: string}>) => {
             const { category = 0, sort = 0, search = '' } = action.payload;
             state.currentCategory = Number(category);
             state.currentSort = Number(sort);

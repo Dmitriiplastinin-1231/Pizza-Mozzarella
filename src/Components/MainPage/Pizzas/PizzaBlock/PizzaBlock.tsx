@@ -1,13 +1,23 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setPizza } from "../../../../redux/slices/cartSlice";
 import { selectPizza } from '../../../../redux/slices/pizzasSlice';
+
+type PizzaBlockProps = {
+  title: string,
+  id: number,
+  price: number,
+  sizes: number[],
+  imageUrl: string,
+  types: number[],
+  selected?: number
+}
 
 /**
  * @bug About types of pizza;
  */
 
-const PizzaBlock = ({ title, id, price, sizes, imageUrl, types, selected = 0 }) => {
+const PizzaBlock: React.FC<PizzaBlockProps > = ({ title, id, price, sizes, imageUrl, types, selected = 0 }) => {
 
   const dispatch = useDispatch();
 
@@ -27,7 +37,7 @@ const PizzaBlock = ({ title, id, price, sizes, imageUrl, types, selected = 0 }) 
     };
 
     dispatch(setPizza(thisPizza));
-    dispatch(selectPizza({id, selected}))
+    dispatch(selectPizza(id))
   }
 
 

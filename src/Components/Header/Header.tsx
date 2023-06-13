@@ -3,17 +3,18 @@ import debounce from 'lodash.debounce';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { setSearchInputValue } from '../../redux/slices/sortSlice';
-import { useRef, useCallback, useState, useEffect } from 'react';
+import React, { useRef, useCallback, useState, useEffect } from 'react';
+import { RootState } from '../../redux/store';
 
-const Header = () => {
+const Header: React.FC = () => {
   const dispatch = useDispatch();
 
 
-  const searchInputValue = useSelector(state => state.sort.searchInputValue);
+  const searchInputValue = useSelector((state: RootState) => state.sort.searchInputValue);
   const [inputValue, setInputValue] = useState('');
-  const inputRef = useRef();
+  const inputRef: React.MutableRefObject<HTMLInputElement> = useRef();
 
-  const { pizzasAmount, priceSum } = useSelector(state => state.cart);
+  const { pizzasAmount, priceSum } = useSelector((state: RootState) => state.cart);
 
 
   /**
@@ -23,12 +24,12 @@ const Header = () => {
    */
 
   useEffect(() => {
-    setInputValue(searchInputValue)
+    setInputValue(searchInputValue);
   }, [searchInputValue]);
 
   // Input action
 
-  const searchChange = (e) => {
+  const searchChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
     updateSearchValue(e.target.value);
   }
@@ -36,10 +37,10 @@ const Header = () => {
   // Input action for redux store with debonce;
 
   const updateSearchValue = useCallback(
-    debounce((inputValue) => {
-      dispatch(setSearchInputValue(inputValue))
+    debounce((inputValue: string) => {
+      dispatch(setSearchInputValue(inputValue));
     }, 400)
-    , []);
+  , [dispatch]);
 
   // Clear input;
 

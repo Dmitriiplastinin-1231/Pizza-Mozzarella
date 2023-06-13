@@ -1,13 +1,18 @@
+import React from "react";
 import { useDispatch } from "react-redux";
 
+type Props = {
+    currentPage: number,
+    setCurrentPage: (ind: number) => any,
+    allPagesCount?: number
+}
 
 
-
-const Pagination = ({currentPage, setCurrentPage, allPagesCount=3}) => {
+const Pagination: React.FC<Props> = ({currentPage, setCurrentPage, allPagesCount=3}) => {
 
     const dispatch = useDispatch();
 
-    const onClick = (ind) => {
+    const onClick = (ind: number) => {
         if (currentPage !== ind) {
             dispatch(setCurrentPage(ind));
         }

@@ -1,28 +1,29 @@
-import { useEffect, useRef } from 'react';
+import React from 'react';
 import { setCurrentSort, setIsOpen } from '../../../redux/slices/sortSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../../redux/store';
 
 
 
-const Sort = () => {
+const Sort: React.FC = () => {
 
 
-  const { isOpen, currentSort, sortCategory } = useSelector(state => state.sort);
+  const { isOpen, currentSort, sortCategory } = useSelector((state: RootState) => state.sort);
   const dispatch = useDispatch();
 
   const sortCurrentName = sortCategory[currentSort].viewName;
 
-  const onClickSort = (index) => {
+  const onClickSort = (index: number) => {
     dispatch(setCurrentSort(index));
     dispatch(setIsOpen());
   }
 
 
-  const sortRef = useRef();
+  const sortRef = React.useRef<HTMLDivElement>();
 
-  useEffect(() => {
+  React.useEffect(() => {
 
-    const setEvent = (e) => {
+    const setEvent = (e: MouseEvent) => {
       if (!e.composedPath().includes(sortRef.current)) {
         dispatch(setIsOpen(false));
       }
@@ -30,7 +31,7 @@ const Sort = () => {
     document.body.addEventListener('click', setEvent)
 
     return () => document.body.removeEventListener('click', setEvent)
-  }, [])
+  }, [dispatch])
 
   return (
     <div className="sort" ref={sortRef}>

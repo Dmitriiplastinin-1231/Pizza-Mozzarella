@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "target": "ES6",
+        "module": "ESNext",
+
+        "allowSyntheticDefaultImports": true,
+        "moduleResolution": "node",
+        "allowUnreachableCode": false,
+        "jsx": "react-jsx",
+
+    },
+    "include": ["src/", "src/@types/assets/custom.d.ts"]
+}

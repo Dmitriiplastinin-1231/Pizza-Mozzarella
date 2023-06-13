@@ -1,16 +1,18 @@
 import { useSelector, useDispatch } from "react-redux";
 import { setActiveCategories } from "../../../redux/slices/sortSlice";
+import { RootState } from "../../../redux/store";
+import React from "react";
 
-const Categories = () => {
+const Categories: React.FC = () => {
 
   const activeCategories = useSelector(
-    state => state.sort.currentCategory
+    (state: RootState) => state.sort.currentCategory
   )
   const dispatch = useDispatch()
 
   const categories = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые']
 
-  const onClick = (index) => {
+  const onClick = (index: number) => {
     dispatch(setActiveCategories(index))
   }
 

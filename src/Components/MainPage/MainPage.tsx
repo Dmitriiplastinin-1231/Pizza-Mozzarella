@@ -1,31 +1,33 @@
-import { useEffect, useState } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import qs from 'qs';
 import Pagination from './Pagination/Pagination';
 import Categories from './Categories/Categories';
 import Sort from './Sort/Sort';
-import { setCurrentPage } from '../../redux/slices/pizzasSlice';
 import { setParams } from '../../redux/slices/sortSlice';
 import Pizzas from './Pizzas/Pizzas';
 import { pizzaFetch } from '../../redux/slices/pizzasSlice';
+import { RootState, AppDispatch } from '../../redux/store';
+import { setCurrentPage } from '../../redux/slices/pizzasSlice';
 
-const MainPage = () => {
 
-    const dispatch = useDispatch();
+const MainPage: React.FC = () => {
+
+    const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
 
 
     // SearchData;
 
-    const { currentPage, pizzas, fetchStatus } = useSelector(state => state.pizzas);
-    const { currentCategory, currentSort, sortCategory, searchInputValue } = useSelector(state => state.sort);
+    const { currentPage, pizzas, fetchStatus } = useSelector((state: RootState) => state.pizzas);
+    const { currentCategory, currentSort, sortCategory, searchInputValue } = useSelector((state: RootState) => state.sort);
 
 
     // Dispatch data from the URL;
 
-    const [isSearch, setIsSearch] = useState(false);
-    useEffect(() => {
+    const [isSearch, setIsSearch] = React.useState(false);
+    React.useEffect(() => {
         if (window.location.search) {
             const params = qs.parse(window.location.search.substring(1));
             dispatch(setParams(params))
@@ -35,18 +37,21 @@ const MainPage = () => {
 
     // Request to the server;
 
-    useEffect(() => {
-        if (isSearch) {
-            dispatch(pizzaFetch({ currentCategory, sortCategory, currentSort, searchInputValue, currentPage }));
+    React.useEffect(() => {
+        const fetch = async() => {
+            if (isSearch) {
+                await dispatch(pizzaFetch({ currentCategory, currentSort: sortCategory[currentSort], searchInputValue, currentPage })).unwrap();
+            }
         }
+        fetch()
     }, [currentCategory, sortCategory, currentSort, searchInputValue, currentPage, isSearch, dispatch]
     );
 
     // Creating URL
 
-    useEffect(() => {
+    React.useEffect(() => {
 
-        let queryObg = {};
+        let queryObg: {sort?: number, category?: number, search?: string} = {};
 
         if (currentSort) queryObg.sort = currentSort;
         if (currentCategory) queryObg.category = currentCategory;
